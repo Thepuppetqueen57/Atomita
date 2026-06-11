@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ltmc1onaoa7b"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kp3kc"]
+albedo_color = Color(0.5222768, 0.6771253, 1, 1)
+
+[node name="Electron" type="Node3D" unique_id=1293752598]
+
+[node name="Sphere" type="CSGSphere3D" parent="." unique_id=307219706]
+radius = 0.1
+radial_segments = 100
+rings = 16
+material = SubResource("StandardMaterial3D_kp3kc")

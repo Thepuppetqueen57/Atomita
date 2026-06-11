@@ -1,0 +1,184 @@
+[gd_scene format=3 uid="uid://edx648b4ssd8"]
+
+[ext_resource type="Script" uid="uid://cpk42ra2jcp0n" path="res://Scripts/Electrons.cs" id="1_1l1na"]
+[ext_resource type="PackedScene" uid="uid://ltmc1onaoa7b" path="res://Prefabs/Electron.tscn" id="1_th3b3"]
+[ext_resource type="Script" uid="uid://c6tmb774lv0xl" path="res://Scripts/ModifierButtons.cs" id="3_2c507"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_exh3y"]
+albedo_color = Color(0.99999565, 0.49426776, 0.42701057, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_exh3y"]
+inner_radius = 0.98
+rings = 61
+ring_segments = 3
+
+[sub_resource type="SphereMesh" id="SphereMesh_th3b3"]
+
+[node name="3DView" type="Node3D" unique_id=1799561330]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1286693525]
+transform = Transform3D(0.45078412, -0.47601888, 0.75511575, 0, 0.84594196, 0.533275, -0.892633, -0.2403919, 0.38133723, 3.0272415, 2.2273235, 1.7120746)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D" unique_id=1758823406]
+light_energy = 3.535
+spot_range = 9.663
+
+[node name="Atom" type="Node3D" parent="." unique_id=368995121]
+
+[node name="Nucleus" type="Node3D" parent="Atom" unique_id=1811936506]
+
+[node name="Protons" type="Node3D" parent="Atom/Nucleus" unique_id=1506019328]
+
+[node name="Proton1" type="CSGSphere3D" parent="Atom/Nucleus/Protons" unique_id=1685223045]
+radius = 0.1
+radial_segments = 100
+rings = 16
+material = SubResource("StandardMaterial3D_exh3y")
+
+[node name="Neutrons" type="Node3D" parent="Atom/Nucleus" unique_id=542506458]
+
+[node name="Electrons" type="Node3D" parent="Atom" unique_id=2124774220]
+
+[node name="Shell1" type="Node3D" parent="Atom/Electrons" unique_id=1969667751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="Electron" parent="Atom/Electrons/Shell1" unique_id=1293752598 instance=ExtResource("1_th3b3")]
+script = ExtResource("1_1l1na")
+
+[node name="ElectronRings" type="Node3D" parent="Atom" unique_id=2798433]
+
+[node name="Ring1" type="MeshInstance3D" parent="Atom/ElectronRings" unique_id=46554326]
+mesh = SubResource("TorusMesh_exh3y")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=384043824]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1011363273]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -464.0
+offset_top = -298.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(1, 1, 1, 0.1764706)
+
+[node name="Proton" type="Control" parent="CanvasLayer/ColorRect" unique_id=704620617]
+anchors_preset = 0
+offset_right = 464.0
+offset_bottom = 104.0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ColorRect/Proton" unique_id=1340685010]
+modulate = Color(1, 0.49411765, 0.42745098, 1)
+position = Vector2(63.999947, 61.00001)
+scale = Vector2(81.500015, 81.500015)
+mesh = SubResource("SphereMesh_th3b3")
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect/Proton" unique_id=1183511500]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 34.0
+offset_right = 299.0
+offset_bottom = 84.0
+theme_override_font_sizes/font_size = 36
+text = "Protons: {}"
+
+[node name="PlusButton" type="Button" parent="CanvasLayer/ColorRect/Proton" unique_id=2139031703]
+layout_mode = 0
+offset_left = 389.0
+offset_top = 30.0
+offset_right = 455.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 34
+text = "+"
+
+[node name="MinusButton" type="Button" parent="CanvasLayer/ColorRect/Proton" unique_id=1528884627]
+layout_mode = 0
+offset_left = 313.0
+offset_top = 29.0
+offset_right = 379.0
+offset_bottom = 95.0
+theme_override_font_sizes/font_size = 34
+text = "-"
+
+[node name="Neutron" type="Control" parent="CanvasLayer/ColorRect" unique_id=587340200]
+anchors_preset = 0
+offset_top = 89.0
+offset_right = 464.0
+offset_bottom = 193.0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ColorRect/Neutron" unique_id=1109517637]
+modulate = Color(0.78431374, 0.78431374, 0.78431374, 1)
+position = Vector2(63.999947, 61.00001)
+scale = Vector2(81.500015, 81.500015)
+mesh = SubResource("SphereMesh_th3b3")
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect/Neutron" unique_id=23975980]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 41.0
+offset_right = 327.0
+offset_bottom = 91.0
+scale = Vector2(0.84000003, 0.84000003)
+theme_override_font_sizes/font_size = 36
+text = "Neutrons: {}"
+
+[node name="PlusButton" type="Button" parent="CanvasLayer/ColorRect/Neutron" unique_id=1950602427]
+layout_mode = 0
+offset_left = 389.0
+offset_top = 31.0
+offset_right = 455.0
+offset_bottom = 97.0
+theme_override_font_sizes/font_size = 34
+text = "+"
+
+[node name="MinusButton" type="Button" parent="CanvasLayer/ColorRect/Neutron" unique_id=46371234]
+layout_mode = 0
+offset_left = 313.0
+offset_top = 30.0
+offset_right = 379.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 34
+text = "-"
+
+[node name="Electron" type="Control" parent="CanvasLayer/ColorRect" unique_id=1805486148]
+anchors_preset = 0
+offset_top = 179.0
+offset_right = 464.0
+offset_bottom = 283.0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ColorRect/Electron" unique_id=2074209584]
+modulate = Color(0.52156866, 0.6784314, 1, 1)
+position = Vector2(63.999947, 61.00001)
+scale = Vector2(81.500015, 81.500015)
+mesh = SubResource("SphereMesh_th3b3")
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect/Electron" unique_id=1139828157]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 41.0
+offset_right = 324.0
+offset_bottom = 91.0
+scale = Vector2(0.8800098, 0.8800098)
+theme_override_font_sizes/font_size = 36
+text = "Electrons: {}"
+
+[node name="PlusButton" type="Button" parent="CanvasLayer/ColorRect/Electron" unique_id=1253152857]
+layout_mode = 0
+offset_left = 389.0
+offset_top = 32.0
+offset_right = 455.0
+offset_bottom = 98.0
+theme_override_font_sizes/font_size = 34
+text = "+"
+script = ExtResource("3_2c507")
+
+[node name="MinusButton" type="Button" parent="CanvasLayer/ColorRect/Electron" unique_id=1909121374]
+layout_mode = 0
+offset_left = 313.0
+offset_top = 31.0
+offset_right = 379.0
+offset_bottom = 97.0
+theme_override_font_sizes/font_size = 34
+text = "-"
