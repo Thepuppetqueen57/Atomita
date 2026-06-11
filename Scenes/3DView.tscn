@@ -1,11 +1,9 @@
 [gd_scene format=3 uid="uid://edx648b4ssd8"]
 
+[ext_resource type="PackedScene" uid="uid://cu3p868gnkmcl" path="res://Prefabs/Proton.tscn" id="1_03gej"]
 [ext_resource type="PackedScene" uid="uid://ltmc1onaoa7b" path="res://Prefabs/Electron.tscn" id="1_th3b3"]
 [ext_resource type="Script" uid="uid://cklkv4srain8" path="res://Scripts/ParticlePanel.cs" id="2_2c507"]
 [ext_resource type="Script" uid="uid://c6tmb774lv0xl" path="res://Scripts/ModifierButtons.cs" id="3_2c507"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_exh3y"]
-albedo_color = Color(0.99999565, 0.49426776, 0.42701057, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_exh3y"]
 inner_radius = 0.98
@@ -63,11 +61,7 @@ transform = Transform3D(0.45078412, -0.47601888, 0.75511575, 0, 0.84594196, 0.53
 
 [node name="Protons" type="Node3D" parent="Atom/Nucleus" unique_id=1506019328]
 
-[node name="Proton1" type="CSGSphere3D" parent="Atom/Nucleus/Protons" unique_id=1685223045]
-radius = 0.1
-radial_segments = 100
-rings = 16
-material = SubResource("StandardMaterial3D_exh3y")
+[node name="Proton" parent="Atom/Nucleus/Protons" unique_id=1015022206 instance=ExtResource("1_03gej")]
 
 [node name="Neutrons" type="Node3D" parent="Atom/Nucleus" unique_id=542506458]
 
@@ -156,6 +150,8 @@ offset_right = 455.0
 offset_bottom = 96.0
 theme_override_font_sizes/font_size = 34
 text = "+"
+script = ExtResource("3_2c507")
+ParticleType = "Proton"
 
 [node name="MinusButton" type="Button" parent="CanvasLayer/ParticlePanel/Proton" unique_id=1528884627]
 layout_mode = 0
@@ -165,6 +161,9 @@ offset_right = 379.0
 offset_bottom = 95.0
 theme_override_font_sizes/font_size = 34
 text = "-"
+script = ExtResource("3_2c507")
+ParticleType = "Proton"
+PlusOrMinus = 0
 
 [node name="Neutron" type="Control" parent="CanvasLayer/ParticlePanel" unique_id=587340200]
 anchors_preset = 0

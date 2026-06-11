@@ -7,7 +7,7 @@ public partial class ModifierButtons : Button {
     [Export] public int PlusOrMinus = 1;
 
     // Define the maximum capacity for each electron shell
-    private readonly int[] _shellCapacities = new int[] { 2, 8, 18, 32, 32, 18, 8 }; 
+    private readonly int[] _shellCapacities = new int[] { 2, 8, 18, 32, 32, 18, 8 };
 
     private const float BaseRadius = 1.0f;
     private const float RadiusStep = 0.5f;
@@ -21,10 +21,53 @@ public partial class ModifierButtons : Button {
             if (PlusOrMinus == 1) {
                 AddElectronToNextAvailableShell();
                 Globals.ElectronCount++;
-            } else if (PlusOrMinus == 0) {
+            } else if (PlusOrMinus == 0 && Globals.ElectronCount > 0) {
                 RemoveElectronFromHighestShell();
                 Globals.ElectronCount--;
             }
+        } else if (ParticleType == "Proton") {
+            if (PlusOrMinus == 1) {
+                Globals.ProtonCount++;
+                AddProton();
+            } else if (PlusOrMinus == 0 && Globals.ProtonCount > 1) {
+                Globals.ProtonCount--;
+                RemoveProton();
+            }
+        } else if (ParticleType == "Neutron") {
+            if (PlusOrMinus == 1) {
+                Globals.NeutronCount++;
+            } else if (PlusOrMinus == 0 && Globals.NeutronCount > 0) {
+                Globals.NeutronCount--;
+            }
+        }
+    }
+
+    private void AddProton() {
+        var proton = GD.Load<PackedScene>("res://Prefabs/Proton.tscn").Instantiate() as Node3D;
+        if (proton == null) return;
+
+        float theta = GD.Randf() * Mathf.Tau;
+        float phi = Mathf.Acos(2.0f * GD.Randf() - 1.0f);
+
+        float baseRadius = 0.1f;
+        float volumeFactor = (float)Math.Cbrt(Globals.ProtonCount + Globals.NeutronCount + 2) * 0.1f;
+        float finalRadius = baseRadius + volumeFactor;
+
+        float x = finalRadius * Mathf.Sin(phi) * Mathf.Cos(theta);
+        float y = finalRadius * Mathf.Sin(phi) * Mathf.Sin(theta);
+        float z = finalRadius * Mathf.Cos(phi);
+
+        proton.Position = new Vector3(x, y, z);
+
+        GetNode<Node3D>("/root/3DView/Atom/Nucleus/Protons").AddChild(proton);
+    }
+
+    private void RemoveProton() {
+        Node3D nucleus = GetNode<Node3D>("/root/3DView/Atom/Nucleus/Protons");
+        if (Globals.ProtonCount > 0) {
+            Node lastProton = nucleus.GetChild(nucleus.GetChildCount() - 1);
+            nucleus.RemoveChild(lastProton);
+            lastProton.QueueFree();
         }
     }
 
@@ -51,12 +94,12 @@ public partial class ModifierButtons : Button {
 
                 RearrangeShellElectrons(shellNode);
 
-                return; 
+                return;
             }
         }
 
         GD.Print("All electron shells are full!");
-        electron.QueueFree(); 
+        electron.QueueFree();
     }
 
     private void RemoveElectronFromHighestShell() {
@@ -93,7 +136,7 @@ public partial class ModifierButtons : Button {
 
         for (int i = 0; i < totalElectrons; i++) {
             Node child = shellNode.GetChild(i);
-            
+
             if (child is Electrons eScript) {
                 eScript.CurrentAngle = i * angleStep;
             }
