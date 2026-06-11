@@ -35,21 +35,36 @@ public partial class ModifierButtons : Button {
                 return;
             }
 
-            // 3. Check if this shell has room
             if (shellNode.GetChildCount() < _shellCapacities[i]) {
                 if (electron is Electrons electronScript) {
                     electronScript.CenterNode = GetNode<Node3D>("/root/3DView/Atom/Nucleus");
-
                     electronScript.RotationRadius = BaseRadius + (i * RadiusStep);
                 }
 
                 shellNode.AddChild(electron);
+
+                RearrangeShellElectrons(shellNode);
+
                 return; 
             }
         }
 
-        // If the loop finishes, it means all defined shells are completely full
         GD.Print("All electron shells are full!");
         electron.QueueFree(); 
+    }
+
+    private void RearrangeShellElectrons(Node shellNode) {
+        int totalElectrons = shellNode.GetChildCount();
+        if (totalElectrons == 0) return;
+
+        float angleStep = Mathf.Tau / totalElectrons;
+
+        for (int i = 0; i < totalElectrons; i++) {
+            Node child = shellNode.GetChild(i);
+            
+            if (child is Electrons eScript) {
+                eScript.CurrentAngle = i * angleStep;
+            }
+        }
     }
 }
