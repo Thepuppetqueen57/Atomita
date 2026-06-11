@@ -17,8 +17,14 @@ public partial class ModifierButtons : Button {
     }
 
     public void OnButtonPressed() {
-        if (PlusOrMinus == 1 && ParticleType == "Electron") {
-            AddElectronToNextAvailableShell();
+        if (ParticleType == "Electron") {
+            if (PlusOrMinus == 1) {
+                AddElectronToNextAvailableShell();
+                Globals.ElectronCount++;
+            } else if (PlusOrMinus == 0) {
+                RemoveElectronFromHighestShell();
+                Globals.ElectronCount--;
+            }
         }
     }
 
@@ -51,6 +57,32 @@ public partial class ModifierButtons : Button {
 
         GD.Print("All electron shells are full!");
         electron.QueueFree(); 
+    }
+
+    private void RemoveElectronFromHighestShell() {
+        for (int i = _shellCapacities.Length - 1; i >= 0; i--) {
+            string shellNodeName = $"Shell{i + 1}";
+            Node shellNode = GetNodeOrNull($"/root/3DView/Atom/Electrons/{shellNodeName}");
+
+            if (shellNode == null) {
+                GD.PrintErr($"Expected scene node '{shellNodeName}' missing!");
+                return;
+            }
+
+            int childCount = shellNode.GetChildCount();
+
+            if (childCount > 0) {
+                Node electronToRemove = shellNode.GetChild(childCount - 1);
+
+                shellNode.RemoveChild(electronToRemove);
+                electronToRemove.QueueFree();
+
+                RearrangeShellElectrons(shellNode);
+                return;
+            }
+        }
+
+        GD.Print("No electrons left to remove!");
     }
 
     private void RearrangeShellElectrons(Node shellNode) {

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://edx648b4ssd8"]
 
 [ext_resource type="PackedScene" uid="uid://ltmc1onaoa7b" path="res://Prefabs/Electron.tscn" id="1_th3b3"]
+[ext_resource type="Script" uid="uid://cklkv4srain8" path="res://Scripts/ParticlePanel.cs" id="2_2c507"]
 [ext_resource type="Script" uid="uid://c6tmb774lv0xl" path="res://Scripts/ModifierButtons.cs" id="3_2c507"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_exh3y"]
@@ -114,7 +115,7 @@ mesh = SubResource("TorusMesh_re4g2")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=384043824]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1011363273]
+[node name="ParticlePanel" type="ColorRect" parent="CanvasLayer" unique_id=1011363273]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -125,19 +126,20 @@ offset_top = -298.0
 grow_horizontal = 0
 grow_vertical = 0
 color = Color(1, 1, 1, 0.1764706)
+script = ExtResource("2_2c507")
 
-[node name="Proton" type="Control" parent="CanvasLayer/ColorRect" unique_id=704620617]
+[node name="Proton" type="Control" parent="CanvasLayer/ParticlePanel" unique_id=704620617]
 anchors_preset = 0
 offset_right = 464.0
 offset_bottom = 104.0
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ColorRect/Proton" unique_id=1340685010]
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ParticlePanel/Proton" unique_id=1340685010]
 modulate = Color(1, 0.49411765, 0.42745098, 1)
 position = Vector2(63.999947, 61.00001)
 scale = Vector2(81.500015, 81.500015)
 mesh = SubResource("SphereMesh_th3b3")
 
-[node name="Label" type="Label" parent="CanvasLayer/ColorRect/Proton" unique_id=1183511500]
+[node name="Label" type="Label" parent="CanvasLayer/ParticlePanel/Proton" unique_id=1183511500]
 layout_mode = 0
 offset_left = 116.0
 offset_top = 34.0
@@ -146,7 +148,7 @@ offset_bottom = 84.0
 theme_override_font_sizes/font_size = 36
 text = "Protons: {}"
 
-[node name="PlusButton" type="Button" parent="CanvasLayer/ColorRect/Proton" unique_id=2139031703]
+[node name="PlusButton" type="Button" parent="CanvasLayer/ParticlePanel/Proton" unique_id=2139031703]
 layout_mode = 0
 offset_left = 389.0
 offset_top = 30.0
@@ -155,7 +157,7 @@ offset_bottom = 96.0
 theme_override_font_sizes/font_size = 34
 text = "+"
 
-[node name="MinusButton" type="Button" parent="CanvasLayer/ColorRect/Proton" unique_id=1528884627]
+[node name="MinusButton" type="Button" parent="CanvasLayer/ParticlePanel/Proton" unique_id=1528884627]
 layout_mode = 0
 offset_left = 313.0
 offset_top = 29.0
@@ -164,19 +166,19 @@ offset_bottom = 95.0
 theme_override_font_sizes/font_size = 34
 text = "-"
 
-[node name="Neutron" type="Control" parent="CanvasLayer/ColorRect" unique_id=587340200]
+[node name="Neutron" type="Control" parent="CanvasLayer/ParticlePanel" unique_id=587340200]
 anchors_preset = 0
 offset_top = 89.0
 offset_right = 464.0
 offset_bottom = 193.0
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ColorRect/Neutron" unique_id=1109517637]
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ParticlePanel/Neutron" unique_id=1109517637]
 modulate = Color(0.78431374, 0.78431374, 0.78431374, 1)
 position = Vector2(63.999947, 61.00001)
 scale = Vector2(81.500015, 81.500015)
 mesh = SubResource("SphereMesh_th3b3")
 
-[node name="Label" type="Label" parent="CanvasLayer/ColorRect/Neutron" unique_id=23975980]
+[node name="Label" type="Label" parent="CanvasLayer/ParticlePanel/Neutron" unique_id=23975980]
 layout_mode = 0
 offset_left = 116.0
 offset_top = 41.0
@@ -186,7 +188,7 @@ scale = Vector2(0.84000003, 0.84000003)
 theme_override_font_sizes/font_size = 36
 text = "Neutrons: {}"
 
-[node name="PlusButton" type="Button" parent="CanvasLayer/ColorRect/Neutron" unique_id=1950602427]
+[node name="PlusButton" type="Button" parent="CanvasLayer/ParticlePanel/Neutron" unique_id=1950602427]
 layout_mode = 0
 offset_left = 389.0
 offset_top = 31.0
@@ -195,7 +197,7 @@ offset_bottom = 97.0
 theme_override_font_sizes/font_size = 34
 text = "+"
 
-[node name="MinusButton" type="Button" parent="CanvasLayer/ColorRect/Neutron" unique_id=46371234]
+[node name="MinusButton" type="Button" parent="CanvasLayer/ParticlePanel/Neutron" unique_id=46371234]
 layout_mode = 0
 offset_left = 313.0
 offset_top = 30.0
@@ -204,19 +206,19 @@ offset_bottom = 96.0
 theme_override_font_sizes/font_size = 34
 text = "-"
 
-[node name="Electron" type="Control" parent="CanvasLayer/ColorRect" unique_id=1805486148]
+[node name="Electron" type="Control" parent="CanvasLayer/ParticlePanel" unique_id=1805486148]
 anchors_preset = 0
 offset_top = 179.0
 offset_right = 464.0
 offset_bottom = 283.0
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ColorRect/Electron" unique_id=2074209584]
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer/ParticlePanel/Electron" unique_id=2074209584]
 modulate = Color(0.52156866, 0.6784314, 1, 1)
 position = Vector2(63.999947, 61.00001)
 scale = Vector2(81.500015, 81.500015)
 mesh = SubResource("SphereMesh_th3b3")
 
-[node name="Label" type="Label" parent="CanvasLayer/ColorRect/Electron" unique_id=1139828157]
+[node name="Label" type="Label" parent="CanvasLayer/ParticlePanel/Electron" unique_id=1139828157]
 layout_mode = 0
 offset_left = 116.0
 offset_top = 41.0
@@ -226,7 +228,7 @@ scale = Vector2(0.8800098, 0.8800098)
 theme_override_font_sizes/font_size = 36
 text = "Electrons: {}"
 
-[node name="PlusButton" type="Button" parent="CanvasLayer/ColorRect/Electron" unique_id=1253152857]
+[node name="PlusButton" type="Button" parent="CanvasLayer/ParticlePanel/Electron" unique_id=1253152857]
 layout_mode = 0
 offset_left = 389.0
 offset_top = 32.0
@@ -236,7 +238,7 @@ theme_override_font_sizes/font_size = 34
 text = "+"
 script = ExtResource("3_2c507")
 
-[node name="MinusButton" type="Button" parent="CanvasLayer/ColorRect/Electron" unique_id=1909121374]
+[node name="MinusButton" type="Button" parent="CanvasLayer/ParticlePanel/Electron" unique_id=1909121374]
 layout_mode = 0
 offset_left = 313.0
 offset_top = 31.0
@@ -244,3 +246,5 @@ offset_right = 379.0
 offset_bottom = 97.0
 theme_override_font_sizes/font_size = 34
 text = "-"
+script = ExtResource("3_2c507")
+PlusOrMinus = 0
