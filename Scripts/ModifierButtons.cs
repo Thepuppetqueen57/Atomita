@@ -27,16 +27,18 @@ public partial class ModifierButtons : Button {
             }
         } else if (ParticleType == "Proton") {
             if (PlusOrMinus == 1) {
-                Globals.ProtonCount++;
                 AddProton();
+                Globals.ProtonCount++;
             } else if (PlusOrMinus == 0 && Globals.ProtonCount > 1) {
-                Globals.ProtonCount--;
                 RemoveProton();
+                Globals.ProtonCount--;
             }
         } else if (ParticleType == "Neutron") {
             if (PlusOrMinus == 1) {
+                AddNeutron();
                 Globals.NeutronCount++;
             } else if (PlusOrMinus == 0 && Globals.NeutronCount > 0) {
+                RemoveNeutron();
                 Globals.NeutronCount--;
             }
         }
@@ -68,6 +70,35 @@ public partial class ModifierButtons : Button {
             Node lastProton = nucleus.GetChild(nucleus.GetChildCount() - 1);
             nucleus.RemoveChild(lastProton);
             lastProton.QueueFree();
+        }
+    }
+
+    private void AddNeutron() {
+        var neutron = GD.Load<PackedScene>("res://Prefabs/Neutron.tscn").Instantiate() as Node3D;
+        if (neutron == null) return;
+
+        float theta = GD.Randf() * Mathf.Tau;
+        float phi = Mathf.Acos(2.0f * GD.Randf() - 1.0f);
+
+        float baseRadius = 0.1f;
+        float volumeFactor = (float)Math.Cbrt(Globals.ProtonCount + Globals.NeutronCount + 2) * 0.1f;
+        float finalRadius = baseRadius + volumeFactor;
+
+        float x = finalRadius * Mathf.Sin(phi) * Mathf.Cos(theta);
+        float y = finalRadius * Mathf.Sin(phi) * Mathf.Sin(theta);
+        float z = finalRadius * Mathf.Cos(phi);
+
+        neutron.Position = new Vector3(x, y, z);
+
+        GetNode<Node3D>("/root/3DView/Atom/Nucleus/Neutrons").AddChild(neutron);
+    }
+
+    private void RemoveNeutron() {
+        Node3D nucleus = GetNode<Node3D>("/root/3DView/Atom/Nucleus/Neutrons");
+        if (Globals.NeutronCount > 0) {
+            Node lastNeutron = nucleus.GetChild(nucleus.GetChildCount() - 1);
+            nucleus.RemoveChild(lastNeutron);
+            lastNeutron.QueueFree();
         }
     }
 

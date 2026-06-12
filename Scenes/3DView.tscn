@@ -195,6 +195,8 @@ offset_right = 455.0
 offset_bottom = 97.0
 theme_override_font_sizes/font_size = 34
 text = "+"
+script = ExtResource("3_2c507")
+ParticleType = "Neutron"
 
 [node name="MinusButton" type="Button" parent="CanvasLayer/ParticlePanel/Neutron" unique_id=46371234]
 layout_mode = 0
@@ -204,6 +206,9 @@ offset_right = 379.0
 offset_bottom = 96.0
 theme_override_font_sizes/font_size = 34
 text = "-"
+script = ExtResource("3_2c507")
+ParticleType = "Neutron"
+PlusOrMinus = 0
 
 [node name="Electron" type="Control" parent="CanvasLayer/ParticlePanel" unique_id=1805486148]
 anchors_preset = 0
