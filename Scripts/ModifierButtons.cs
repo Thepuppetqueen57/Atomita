@@ -18,12 +18,12 @@ public partial class ModifierButtons : Button {
 
     public void OnButtonPressed() {
         if (ParticleType == "Electron") {
-            if (PlusOrMinus == 1) {
-                AddElectronToNextAvailableShell();
+            if (PlusOrMinus == 1 && Globals.ElectronCount < 118) {
                 Globals.ElectronCount++;
+                UpdateVisualElectrons();
             } else if (PlusOrMinus == 0 && Globals.ElectronCount > 0) {
-                RemoveElectronFromHighestShell();
                 Globals.ElectronCount--;
+                UpdateVisualElectrons();
             }
         } else if (ParticleType == "Proton") {
             if (PlusOrMinus == 1) {
@@ -102,61 +102,39 @@ public partial class ModifierButtons : Button {
         }
     }
 
-    private void AddElectronToNextAvailableShell() {
-        var electron = GD.Load<PackedScene>("res://Prefabs/Electron.tscn").Instantiate();
+    private void UpdateVisualElectrons() {
+        int[] targetConfig = GetBohrConfiguration(Globals.ElectronCount);
 
-        for (int i = 0; i < _shellCapacities.Length; i++) {
+        for (int i = 0; i < targetConfig.Length; i++) {
             string shellNodeName = $"Shell{i + 1}";
             Node shellNode = GetNodeOrNull($"/root/3DView/Atom/Electrons/{shellNodeName}");
 
             if (shellNode == null) {
                 GD.PrintErr($"Expected scene node '{shellNodeName}' missing!");
-                electron.QueueFree();
-                return;
+                continue;
             }
 
-            if (shellNode.GetChildCount() < _shellCapacities[i]) {
+            int currentCount = shellNode.GetChildCount();
+            int targetCount = targetConfig[i];
+            while (currentCount < targetCount) {
+                var electron = GD.Load<PackedScene>("res://Prefabs/Electron.tscn").Instantiate();
                 if (electron is Electrons electronScript) {
                     electronScript.CenterNode = GetNode<Node3D>("/root/3DView/Atom/Nucleus");
                     electronScript.RotationRadius = BaseRadius + (i * RadiusStep);
                 }
-
                 shellNode.AddChild(electron);
-
-                RearrangeShellElectrons(shellNode);
-
-                return;
-            }
-        }
-
-        GD.Print("All electron shells are full!");
-        electron.QueueFree();
-    }
-
-    private void RemoveElectronFromHighestShell() {
-        for (int i = _shellCapacities.Length - 1; i >= 0; i--) {
-            string shellNodeName = $"Shell{i + 1}";
-            Node shellNode = GetNodeOrNull($"/root/3DView/Atom/Electrons/{shellNodeName}");
-
-            if (shellNode == null) {
-                GD.PrintErr($"Expected scene node '{shellNodeName}' missing!");
-                return;
+                currentCount++;
             }
 
-            int childCount = shellNode.GetChildCount();
-
-            if (childCount > 0) {
-                Node electronToRemove = shellNode.GetChild(childCount - 1);
-
+            while (currentCount > targetCount) {
+                Node electronToRemove = shellNode.GetChild(currentCount - 1);
                 shellNode.RemoveChild(electronToRemove);
                 electronToRemove.QueueFree();
-
-                RearrangeShellElectrons(shellNode);
-                return;
+                currentCount--;
             }
-        }
 
-        GD.Print("No electrons left to remove!");
+            RearrangeShellElectrons(shellNode);
+        }
     }
 
     private void RearrangeShellElectrons(Node shellNode) {
@@ -172,5 +150,44 @@ public partial class ModifierButtons : Button {
                 eScript.CurrentAngle = i * angleStep;
             }
         }
+    }
+
+    private int[] GetBohrConfiguration(int totalElectrons) {
+        int[] shells = new int[7];
+        if (totalElectrons <= 0) return shells;
+
+        // Standard Aufbau filling order by subshells (n, l)
+        // Format: (shellIndex, subshellCapacity)
+        var subshells = new (int shell, int capacity)[] {
+            (0, 2),  // 1s
+            (1, 2),  // 2s
+            (1, 6),  // 2p
+            (2, 2),  // 3s
+            (2, 6),  // 3p
+            (3, 2),  // 4s
+            (2, 10), // 3d
+            (3, 6),  // 4p
+            (4, 2),  // 5s
+            (3, 10), // 4d
+            (4, 6),  // 5p
+            (5, 2),  // 6s
+            (4, 14), // 4f
+            (5, 10), // 5d
+            (6, 6),  // 6p
+            (6, 2),  // 7s
+            (5, 14), // 5f
+            (6, 10), // 6d
+            (6, 6)   // 7p
+        };
+
+        int remaining = totalElectrons;
+        foreach (var subshell in subshells) {
+            int take = Mathf.Min(remaining, subshell.capacity);
+            shells[subshell.shell] += take;
+            remaining -= take;
+            if (remaining <= 0) break;
+        }
+
+        return shells;
     }
 }
