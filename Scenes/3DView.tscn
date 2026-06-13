@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ltmc1onaoa7b" path="res://Prefabs/Electron.tscn" id="1_th3b3"]
 [ext_resource type="Script" uid="uid://cklkv4srain8" path="res://Scripts/ParticlePanel.cs" id="2_2c507"]
 [ext_resource type="Script" uid="uid://c6tmb774lv0xl" path="res://Scripts/ModifierButtons.cs" id="3_2c507"]
+[ext_resource type="Script" uid="uid://bygks6jijhdp5" path="res://Scripts/InfoPanel.cs" id="5_anqtm"]
 
 [sub_resource type="TorusMesh" id="TorusMesh_exh3y"]
 inner_radius = 0.98
@@ -252,3 +253,41 @@ theme_override_font_sizes/font_size = 34
 text = "-"
 script = ExtResource("3_2c507")
 PlusOrMinus = 0
+
+[node name="InfoPanel" type="ColorRect" parent="CanvasLayer" unique_id=1378725338]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1920.0
+offset_top = -298.0
+offset_right = -1456.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(1, 1, 1, 0.1764706)
+script = ExtResource("5_anqtm")
+
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/InfoPanel" unique_id=191777341]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical = true
+
+[node name="Element" type="Label" parent="CanvasLayer/InfoPanel/BoxContainer" unique_id=648792327]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "Element: {}"
+
+[node name="Isotope" type="Label" parent="CanvasLayer/InfoPanel/BoxContainer" unique_id=256942843]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "Isotope: {}"
+
+[node name="Charge" type="Label" parent="CanvasLayer/InfoPanel/BoxContainer" unique_id=255830759]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "Charge: {}"
